@@ -12,25 +12,18 @@ st.set_page_config(page_title="Vision Analytics AI", page_icon="✨", layout="wi
 # ==========================================
 st.markdown("""
 <style>
-    /* 1. Background */
     .stApp {
         background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #020617 100%) !important;
         background-attachment: fixed;
     }
-
-    /* Hide Header */
     [data-testid="stHeader"] { background-color: transparent !important; }
     [data-testid="stHeader"] * { color: #F8FAFC !important; }
-
-    /* 2. Typography */
     h1, h2, h3, label, p, li {
         color: #F8FAFC !important;
         font-family: 'Inter', 'Segoe UI', -apple-system, sans-serif;
         font-weight: 600 !important;
         letter-spacing: 0.2px;
     }
-
-    /* Gradient Title Effect */
     .gradient-text {
         background: linear-gradient(135deg, #A855F7 0%, #38BDF8 100%);
         -webkit-background-clip: text;
@@ -42,20 +35,15 @@ st.markdown("""
         letter-spacing: -1px;
         text-shadow: 0px 4px 20px rgba(168, 85, 247, 0.3);
     }
-
-    /* 🚀 Animations */
     @keyframes fadeInUp {
         0% { opacity: 0; transform: translateY(30px); }
         100% { opacity: 1; transform: translateY(0); }
     }
-
     @keyframes pulseGlow {
         0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.5); }
         70% { box-shadow: 0 0 0 12px rgba(59, 130, 246, 0); }
         100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
     }
-
-    /* 3. Glass Cards with Hover Effects */
     [data-testid="stForm"], .metric-card {
         background: rgba(15, 23, 42, 0.45) !important;
         backdrop-filter: blur(20px);
@@ -67,14 +55,11 @@ st.markdown("""
         transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
         animation: fadeInUp 0.8s ease-out forwards;
     }
-    
     [data-testid="stForm"]:hover, .metric-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
         border: 1px solid rgba(255, 255, 255, 0.15);
     }
-
-    /* 4. Inputs Design */
     div[data-baseweb="select"] > div,
     div[data-baseweb="base-input"] > input {
         background-color: #F8FAFC !important;
@@ -87,20 +72,6 @@ st.markdown("""
         box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
         transition: all 0.3s ease;
     }
-    div[data-baseweb="select"] > div:hover,
-    div[data-baseweb="base-input"] > input:hover {
-        border: 2px solid rgba(56, 189, 248, 0.5) !important;
-        transform: scale(1.01);
-    }
-
-    /* Dropdown Menu */
-    ul[data-baseweb="menu"] {
-        background-color: #F8FAFC !important;
-        border-radius: 10px !important;
-        box-shadow: 0 15px 35px rgba(0,0,0,0.3) !important;
-    }
-
-    /* 5. Navigation Tabs */
     div[role="radiogroup"] {
         display: flex;
         flex-direction: row;
@@ -128,31 +99,13 @@ st.markdown("""
         background: linear-gradient(135deg, #6366F1 0%, #A855F7 100%) !important;
         box-shadow: 0 4px 15px rgba(168, 85, 247, 0.5);
     }
-    .stRadio label:has(input:checked) div {
-        color: #FFFFFF !important;
-        font-weight: 800 !important;
-    }
-
-    /* 6. Pulsing Analyze Button */
     [data-testid="baseButton-secondary"] {
         background: linear-gradient(135deg, #06B6D4 0%, #3B82F6 100%) !important;
         border: none !important;
         padding: 16px 24px !important;
         border-radius: 12px !important;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         animation: pulseGlow 2.5s infinite;
     }
-    [data-testid="baseButton-secondary"] * {
-        color: #FFFFFF !important;
-        font-weight: 800 !important;
-        text-transform: uppercase;
-    }
-    [data-testid="baseButton-secondary"]:hover {
-        transform: translateY(-3px) scale(1.02);
-        animation: none;
-    }
-
-    /* Expander Design */
     [data-testid="stExpander"] {
         background: rgba(15, 23, 42, 0.45) !important;
         backdrop-filter: blur(20px);
@@ -168,7 +121,6 @@ st.markdown("""
 @st.cache_resource
 def load_assets():
     risk_model = joblib.load('risk_model_pipeline.pkl')
-    # تأكد من تطابق اسم الملف مع المرفوع على جيت هاب
     app_model = joblib.load('app_behavior_model_xgb (1).pkl')
     encoder = joblib.load('label_encoder.pkl')
     return risk_model, app_model, encoder
@@ -183,7 +135,7 @@ except Exception as e:
 # 🚀 Navigation Header
 # ==========================================
 st.markdown("<div class='gradient-text'>Vision Analytics</div>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: #94A3B8 !important; margin-bottom: 25px; font-size: 1.1rem; animation: fadeInUp 0.4s ease-out forwards;'>Empowered by Advanced Machine Learning</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #94A3B8 !important; margin-bottom: 25px;'>Empowered by Advanced Machine Learning</p>", unsafe_allow_html=True)
 
 page = st.radio("", ["Student Risk Analysis", "App Behavior Analysis"], horizontal=True, label_visibility="collapsed")
 
@@ -191,7 +143,7 @@ page = st.radio("", ["Student Risk Analysis", "App Behavior Analysis"], horizont
 # Page 1: Student Risk Analysis
 # ------------------------------------------------------------------
 if page == "Student Risk Analysis":
-    st.markdown("<h3 style='color: #E9D5FF !important; font-weight: 700; display:flex; align-items:center; gap:10px; animation: fadeInUp 0.6s ease-out forwards;'>🧠 Student Risk Intelligence</h3>", unsafe_allow_html=True)
+    st.markdown("<h3 style='color: #E9D5FF !important;'>🧠 Student Risk Intelligence</h3>", unsafe_allow_html=True)
     st.markdown("<br>", unsafe_allow_html=True)
 
     stress_map = {"Very Calm": 1.0, "Normal Stress": 4.0, "Highly Stressed": 7.0, "Extremely Stressed": 10.0}
@@ -211,7 +163,6 @@ if page == "Student Risk Analysis":
             stress = st.selectbox("Stress Level:", options=list(stress_map.keys()))
             anxiety = st.selectbox("Anxiety Level:", options=list(anxiety_map.keys()))
             depression = st.selectbox("Mood & Energy Levels:", options=list(dep_map.keys()))
-
         with col2:
             st.markdown("<b style='color:#38BDF8 !important; font-size: 18px;'>🌍 Environmental Factors</b>", unsafe_allow_html=True)
             support = st.selectbox("Social Support Network:", list(support_map.keys()))
@@ -230,32 +181,19 @@ if page == "Student Risk Analysis":
         with st.spinner("Processing neural pathways..."):
             probs = risk_model.predict_proba(features)[0]
             clean_classes = [str(c).strip().title() for c in encoder.classes_]
-            max_idx = np.argmax(probs)
-            
             prob_dict = {c: p for c, p in zip(clean_classes, probs)}
-            high_prob = prob_dict.get('High', 0.0)
-            medium_prob = prob_dict.get('Medium', 0.0)
             
-            if high_prob >= 0.25: final_label = 'High'
-            elif medium_prob >= 0.35: final_label = 'Medium'
-            else: final_label = clean_classes[max_idx]
+            if prob_dict.get('High', 0.0) >= 0.25: final_label = 'High'
+            elif prob_dict.get('Medium', 0.0) >= 0.35: final_label = 'Medium'
+            else: final_label = clean_classes[np.argmax(probs)]
 
-        st.markdown("<h3 style='margin-top: 35px; color:#F8FAFC;'>🎯 Predictive Intelligence Result</h3>", unsafe_allow_html=True)
         res_col1, res_col2 = st.columns([1, 1.5], gap="large")
-
         with res_col1:
-            st.markdown('<div class="metric-card" style="text-align: center; display: flex; flex-direction: column; justify-content: center; height: 100%;">', unsafe_allow_html=True)
-            if 'High' in final_label:
-                st.markdown("<h2 style='color:#F43F5E !important; font-weight: 900; font-size: 2.5rem;'>🚨 HIGH RISK</h2>", unsafe_allow_html=True)
-                st.markdown("<p style='color:#CBD5E1 !important;'>Immediate clinical intervention recommended.</p>", unsafe_allow_html=True)
-            elif 'Medium' in final_label:
-                st.markdown("<h2 style='color:#FBBF24 !important; font-weight: 900; font-size: 2.5rem;'>🟡 MEDIUM RISK</h2>", unsafe_allow_html=True)
-                st.markdown("<p style='color:#CBD5E1 !important;'>Proactive monitoring and counseling advised.</p>", unsafe_allow_html=True)
-            else:
-                st.markdown("<h2 style='color:#34D399 !important; font-weight: 900; font-size: 2.5rem;'>✅ LOW RISK</h2>", unsafe_allow_html=True)
-                st.markdown("<p style='color:#CBD5E1 !important;'>Profile indicates high emotional resilience.</p>", unsafe_allow_html=True)
+            st.markdown('<div class="metric-card" style="text-align: center;">', unsafe_allow_html=True)
+            if 'High' in final_label: st.markdown("<h2 style='color:#F43F5E;'>🚨 HIGH RISK</h2>", unsafe_allow_html=True)
+            elif 'Medium' in final_label: st.markdown("<h2 style='color:#FBBF24;'>🟡 MEDIUM RISK</h2>", unsafe_allow_html=True)
+            else: st.markdown("<h2 style='color:#34D399;'>✅ LOW RISK</h2>", unsafe_allow_html=True)
             st.markdown('</div>', unsafe_allow_html=True)
-
         with res_col2:
             st.markdown('<div class="metric-card">', unsafe_allow_html=True)
             fig = px.bar(x=probs*100, y=clean_classes, orientation='h', 
@@ -266,16 +204,14 @@ if page == "Student Risk Analysis":
             st.markdown('</div>', unsafe_allow_html=True)
 
 # ------------------------------------------------------------------
-# Page 2: App Behavior Analysis (THE FIXED PART)
+# Page 2: App Behavior Analysis (THE ULTIMATE FIX)
 # ------------------------------------------------------------------
 else:
-    st.markdown("<h3 style='color: #67E8F9 !important; font-weight: 700; display:flex; align-items:center; gap:10px; animation: fadeInUp 0.6s ease-out forwards;'>📱 App Behavior Tech-Metrics</h3>", unsafe_allow_html=True)
+    st.markdown("<h3 style='color: #67E8F9 !important; font-weight: 700; display:flex; align-items:center; gap:10px;'>📱 App Behavior Tech-Metrics</h3>", unsafe_allow_html=True)
     st.markdown("<br>", unsafe_allow_html=True)
 
-    with st.expander("💡 How to find these metrics on your phone? (Quick Guide)"):
-        col1, col2 = st.columns(2)
-        with col1: st.write("🤖 Android: Settings > Digital Wellbeing.")
-        with col2: st.write("🍏 iOS: Settings > Screen Time.")
+    with st.expander("💡 How to find these metrics on your phone?"):
+        st.write("🤖 Android: Settings > Digital Wellbeing | 🍏 iOS: Settings > Screen Time.")
 
     with st.form("app_behavior_form"):
         st.subheader("⚙️ Technical Telemetry")
@@ -295,11 +231,10 @@ else:
 
     if submit_app:
         try:
-            # الحل الجذري لمشكلة الـ Float64 والـ Male/Female
-            # 1. تحويل الـ Gender لرقم (Encoding)
+            # 1. Encoding
             gender_val = 1.0 if gender == "Male" else 0.0
             
-            # 2. بناء الداتا فريم بكل القيم كـ Float
+            # 2. Dictionary with float conversion
             input_dict = {
                 'App Usage Time (min/day)': float(app_usage),
                 'Screen On Time (hours/day)': float(screen_time),
@@ -310,7 +245,7 @@ else:
                 'Gender': gender_val
             }
             
-            # 3. التأكد من ترتيب الأعمدة كما يتوقعها الموديل
+            # 3. Handle Column Order
             if hasattr(app_model, 'feature_names_in_'):
                 expected = list(app_model.feature_names_in_)
                 df_app = pd.DataFrame([input_dict])[expected]
@@ -318,8 +253,15 @@ else:
                 df_app = pd.DataFrame([input_dict])
 
             with st.spinner("Analyzing patterns..."):
-                # التوقع وتحويل النتيجة لـ Integer للعرض
-                pred = app_model.predict(df_app)[0]
+                # ==========================================
+                # 🔥 الحل الجذري لمشكلة isnan و dtypes:
+                # نحول البيانات إلى مصفوفة NumPy من نوع float32
+                # هذا يتجاهل أسماء الأعمدة ويحل مشكلة النوع المزدوج
+                # ==========================================
+                final_input = df_app.values.astype(np.float32)
+                
+                pred = app_model.predict(final_input)[0]
+                
                 st.markdown(f"""
                     <div class="metric-card" style="text-align: center; margin-top:25px; animation: fadeInUp 0.5s ease-out forwards;">
                         <h3 style='color:#CBD5E1 !important;'>Predicted Class</h3>
