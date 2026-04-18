@@ -96,6 +96,14 @@ st.markdown("""
         border-radius: 12px !important;
         animation: pulseGlow 2.5s infinite;
     }
+    [data-testid="stExpander"] {
+        background: rgba(15, 23, 42, 0.45) !important;
+        backdrop-filter: blur(20px);
+        border-radius: 15px !important;
+        border: 1px solid rgba(56, 189, 248, 0.3) !important;
+        margin-bottom: 20px;
+        animation: fadeInUp 0.7s ease-out forwards;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -212,16 +220,16 @@ else:
                 'Gender': gender_val
             }
             
-            # 3. 🔥 THE FIX: Match Order & Cast to Float32 while keeping it a DataFrame
+            # 3. 🔥 THE FIX: Match Order & Cast to Float32
+            # إحنا بنجبر كل القيم تكون float32 وبنسيبها كـ DataFrame عشان الـ Pipeline يفضل شايف أسماء الأعمدة
             if hasattr(app_model, 'feature_names_in_'):
                 expected = list(app_model.feature_names_in_)
-                # تحويل النوع لـ float32 مع الحفاظ على أسماء الأعمدة يرضي الموديل والـ XGBoost
-                df_app = pd.DataFrame([input_dict])[expected].astype(np.float32)
+                df_app = pd.DataFrame([input_dict])[expected].apply(pd.to_numeric).astype(np.float32)
             else:
-                df_app = pd.DataFrame([input_dict]).astype(np.float32)
+                df_app = pd.DataFrame([input_dict]).apply(pd.to_numeric).astype(np.float32)
 
             with st.spinner("Analyzing..."):
-                # نبعت الـ DataFrame كما هو بأسماء الأعمدة
+                # بنبعت الـ DataFrame كما هو بأسماء الأعمدة
                 pred = app_model.predict(df_app)[0]
                 
                 st.markdown(f"""
