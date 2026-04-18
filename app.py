@@ -96,14 +96,6 @@ st.markdown("""
         border-radius: 12px !important;
         animation: pulseGlow 2.5s infinite;
     }
-    [data-testid="stExpander"] {
-        background: rgba(15, 23, 42, 0.45) !important;
-        backdrop-filter: blur(20px);
-        border-radius: 15px !important;
-        border: 1px solid rgba(56, 189, 248, 0.3) !important;
-        margin-bottom: 20px;
-        animation: fadeInUp 0.7s ease-out forwards;
-    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -186,14 +178,11 @@ if page == "Student Risk Analysis":
             st.markdown('</div>', unsafe_allow_html=True)
 
 # ------------------------------------------------------------------
-# Page 2: App Behavior Analysis (FIXED SECTION)
+# Page 2: App Behavior Analysis (THE ULTIMATE FIX)
 # ------------------------------------------------------------------
 else:
     st.markdown("<h3 style='color: #67E8F9 !important;'>📱 App Behavior Tech-Metrics</h3>", unsafe_allow_html=True)
     
-    with st.expander("💡 How to find these metrics?"):
-        st.write("🤖 Android: Settings > Digital Wellbeing | 🍏 iOS: Settings > Screen Time.")
-
     with st.form("app_behavior_form"):
         c1, c2 = st.columns(2, gap="large")
         with c1:
@@ -223,16 +212,16 @@ else:
                 'Gender': gender_val
             }
             
-            # 3. Match Order & Dtype Fix (الحل النهائي)
+            # 3. 🔥 THE FIX: Match Order & Cast to Float32 while keeping it a DataFrame
             if hasattr(app_model, 'feature_names_in_'):
                 expected = list(app_model.feature_names_in_)
-                # هنا بنعمل DataFrame وبنحول نوع البيانات لـ float32 ونحافظ على أسماء الأعمدة
+                # تحويل النوع لـ float32 مع الحفاظ على أسماء الأعمدة يرضي الموديل والـ XGBoost
                 df_app = pd.DataFrame([input_dict])[expected].astype(np.float32)
             else:
                 df_app = pd.DataFrame([input_dict]).astype(np.float32)
 
             with st.spinner("Analyzing..."):
-                # بنبعت الـ DataFrame نفسه (مش الـ values) عشان الـ Strings تدعم الأعمدة
+                # نبعت الـ DataFrame كما هو بأسماء الأعمدة
                 pred = app_model.predict(df_app)[0]
                 
                 st.markdown(f"""
