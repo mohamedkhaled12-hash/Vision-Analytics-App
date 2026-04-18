@@ -189,7 +189,7 @@ st.markdown("""
 # 2. Load Models
 @st.cache_resource
 def load_assets():
-    risk_model = joblib.load('risk_model_pipeline.pkl')
+    risk_model = joblib.load('risk_model_pipeline.pkl (1)')
     app_model = joblib.load('app_behavior_model_xgb.pkl')
     encoder = joblib.load('label_encoder.pkl')
     return risk_model, app_model, encoder
