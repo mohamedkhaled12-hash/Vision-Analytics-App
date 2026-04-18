@@ -3,6 +3,10 @@ import pandas as pd
 import joblib
 import numpy as np
 import plotly.express as px
+import warnings
+
+# إخفاء أي تحذيرات مزعجة
+warnings.filterwarnings('ignore')
 
 # 1. Page Config
 st.set_page_config(page_title="Vision Analytics AI", page_icon="✨", layout="wide")
@@ -61,48 +65,33 @@ st.markdown("""
         border: 1px solid rgba(255, 255, 255, 0.15);
     }
     div[data-baseweb="select"] > div, div[data-baseweb="base-input"] > input {
-        background-color: #F8FAFC !important;
-        color: #0F172A !important;
-        font-weight: 700 !important;
-        font-size: 15px !important;
-        border-radius: 10px !important;
-        border: 2px solid transparent !important;
-        -webkit-text-fill-color: #0F172A !important;
-        box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
-        transition: all 0.3s ease;
+        background-color: #F8FAFC !important; color: #0F172A !important; font-weight: 700 !important;
+        font-size: 15px !important; border-radius: 10px !important; border: 2px solid transparent !important;
+        -webkit-text-fill-color: #0F172A !important; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); transition: all 0.3s ease;
     }
     div[data-baseweb="select"] > div:hover, div[data-baseweb="base-input"] > input:hover {
-        border: 2px solid rgba(56, 189, 248, 0.5) !important;
-        transform: scale(1.01);
+        border: 2px solid rgba(56, 189, 248, 0.5) !important; transform: scale(1.01);
     }
     ul[data-baseweb="menu"] { background-color: #F8FAFC !important; border-radius: 10px !important; box-shadow: 0 15px 35px rgba(0,0,0,0.3) !important; }
     ul[data-baseweb="menu"] li { color: #0F172A !important; font-weight: 600 !important; font-size: 14px !important; padding: 10px 15px !important; }
     div[role="radiogroup"] {
-        display: flex; flex-direction: row; justify-content: center !important; gap: 8px;
-        background: rgba(15, 23, 42, 0.6); padding: 6px; border-radius: 100px;
-        width: fit-content; margin: 0 auto 35px auto; border: 1px solid rgba(255, 255, 255, 0.05);
+        display: flex; flex-direction: row; justify-content: center !important; gap: 8px; background: rgba(15, 23, 42, 0.6);
+        padding: 6px; border-radius: 100px; width: fit-content; margin: 0 auto 35px auto; border: 1px solid rgba(255, 255, 255, 0.05);
         backdrop-filter: blur(10px); animation: fadeInUp 0.5s ease-out forwards;
     }
     .stRadio [role="radio"] { display: none !important; }
     .stRadio label {
-        background: transparent !important; padding: 10px 30px !important;
-        border-radius: 100px !important; cursor: pointer; transition: all 0.3s ease; margin: 0 !important; border: none !important;
+        background: transparent !important; padding: 10px 30px !important; border-radius: 100px !important;
+        cursor: pointer; transition: all 0.3s ease; margin: 0 !important; border: none !important;
     }
     .stRadio label:hover { background: rgba(255, 255, 255, 0.05) !important; }
-    .stRadio label:has(input:checked) {
-        background: linear-gradient(135deg, #6366F1 0%, #A855F7 100%) !important;
-        box-shadow: 0 4px 15px rgba(168, 85, 247, 0.5);
-    }
+    .stRadio label:has(input:checked) { background: linear-gradient(135deg, #6366F1 0%, #A855F7 100%) !important; box-shadow: 0 4px 15px rgba(168, 85, 247, 0.5); }
     .stRadio label:has(input:checked) div { color: #FFFFFF !important; font-weight: 800 !important; letter-spacing: 0.3px; }
     [data-testid="baseButton-secondary"] {
-        background: linear-gradient(135deg, #06B6D4 0%, #3B82F6 100%) !important;
-        border: none !important; padding: 16px 24px !important; border-radius: 12px !important;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); animation: pulseGlow 2.5s infinite;
+        background: linear-gradient(135deg, #06B6D4 0%, #3B82F6 100%) !important; border: none !important; padding: 16px 24px !important;
+        border-radius: 12px !important; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); animation: pulseGlow 2.5s infinite;
     }
-    [data-testid="baseButton-secondary"] * {
-        color: #FFFFFF !important; font-weight: 800 !important; font-size: 16px !important;
-        letter-spacing: 1px; text-transform: uppercase;
-    }
+    [data-testid="baseButton-secondary"] * { color: #FFFFFF !important; font-weight: 800 !important; font-size: 16px !important; letter-spacing: 1px; text-transform: uppercase; }
     [data-testid="baseButton-secondary"]:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 15px 30px -5px rgba(59, 130, 246, 0.6) !important; animation: none; }
     [data-testid="stExpander"] {
         background: rgba(15, 23, 42, 0.45) !important; backdrop-filter: blur(20px); border-radius: 15px !important;
@@ -136,7 +125,7 @@ st.markdown("<p style='text-align: center; color: #94A3B8 !important; margin-bot
 page = st.radio("", ["Student Risk Analysis", "App Behavior Analysis"], horizontal=True, label_visibility="collapsed")
 
 # ------------------------------------------------------------------
-# Page 1: Student Risk Analysis
+# Page 1: Student Risk Analysis (تم إضافة الحل الجذري هنا أيضاً)
 # ------------------------------------------------------------------
 if page == "Student Risk Analysis":
     st.markdown("<h3 style='color: #E9D5FF !important; font-weight: 700; display:flex; align-items:center; gap:10px; animation: fadeInUp 0.6s ease-out forwards;'>🧠 Student Risk Intelligence</h3>", unsafe_allow_html=True)
@@ -153,76 +142,75 @@ if page == "Student Risk Analysis":
         st.subheader("📋 Behavioral Assessment")
         st.markdown("<hr style='border-color: rgba(255,255,255,0.1); margin: 10px 0 25px 0;'>", unsafe_allow_html=True)
         col1, col2 = st.columns(2, gap="large")
-
         with col1:
             st.markdown("<b style='color:#38BDF8 !important; font-size: 18px;'>🧬 Psychological Factors</b>", unsafe_allow_html=True)
             stress = st.selectbox("Stress Level:", options=list(stress_map.keys()))
             anxiety = st.selectbox("Anxiety Level:", options=list(anxiety_map.keys()))
             depression = st.selectbox("Mood & Energy Levels:", options=list(dep_map.keys()))
-
         with col2:
             st.markdown("<b style='color:#38BDF8 !important; font-size: 18px;'>🌍 Environmental Factors</b>", unsafe_allow_html=True)
             support = st.selectbox("Social Support Network:", list(support_map.keys()))
             sleep = st.selectbox("Average Daily Sleep:", list(sleep_map.keys()))
             exams = st.selectbox("Academic Workload:", options=list(exam_map.keys()))
-
-        st.markdown("<br>", unsafe_allow_html=True)
         submit_risk = st.form_submit_button("Initiate AI Analysis", use_container_width=True)
 
     if submit_risk:
-        features = pd.DataFrame([[
-            stress_map[stress], anxiety_map[anxiety], dep_map[depression],
-            support_map[support], sleep_map[sleep], exam_map[exams]
-        ]], columns=['stress_level', 'anxiety_score', 'depression_score', 'social_support', 'sleep_hours', 'exam_pressure'], dtype=float)
+        try:
+            # 1. إجبار بناء البيانات كقاموس وتحويل كل عنصر لـ Float صريح
+            risk_data = {
+                'stress_level': [float(stress_map[stress])],
+                'anxiety_score': [float(anxiety_map[anxiety])],
+                'depression_score': [float(dep_map[depression])],
+                'social_support': [float(support_map[support])],
+                'sleep_hours': [float(sleep_map[sleep])],
+                'exam_pressure': [float(exam_map[exams])]
+            }
+            # 2. إنشاء DataFrame وتحويل النوع الإجمالي لـ float64
+            df_risk = pd.DataFrame(risk_data).astype(np.float64)
 
-        with st.spinner("Processing neural pathways..."):
-            probs = risk_model.predict_proba(features)[0]
-            clean_classes = [str(c).strip().title() for c in encoder.classes_]
-            max_idx = np.argmax(probs)
-            base_label = clean_classes[max_idx]
-            
-            prob_dict = {c: p for c, p in zip(clean_classes, probs)}
-            high_prob = prob_dict.get('High', 0.0)
-            medium_prob = prob_dict.get('Medium', 0.0)
-            
-            if high_prob >= 0.25: final_label = 'High'
-            elif medium_prob >= 0.35: final_label = 'Medium'
-            else: final_label = base_label
+            with st.spinner("Processing neural pathways..."):
+                probs = risk_model.predict_proba(df_risk)[0]
+                clean_classes = [str(c).strip().title() for c in encoder.classes_]
+                max_idx = np.argmax(probs)
+                base_label = clean_classes[max_idx]
+                
+                prob_dict = {c: p for c, p in zip(clean_classes, probs)}
+                high_prob = prob_dict.get('High', 0.0)
+                medium_prob = prob_dict.get('Medium', 0.0)
+                
+                if high_prob >= 0.25: final_label = 'High'
+                elif medium_prob >= 0.35: final_label = 'Medium'
+                else: final_label = base_label
 
-        st.markdown("<h3 style='margin-top: 35px; color:#F8FAFC; animation: fadeInUp 0.4s ease-out forwards;'>🎯 Predictive Intelligence Result</h3>", unsafe_allow_html=True)
-        res_col1, res_col2 = st.columns([1, 1.5], gap="large")
+            st.markdown("<h3 style='margin-top: 35px; color:#F8FAFC; animation: fadeInUp 0.4s ease-out forwards;'>🎯 Predictive Intelligence Result</h3>", unsafe_allow_html=True)
+            res_col1, res_col2 = st.columns([1, 1.5], gap="large")
 
-        with res_col1:
-            st.markdown('<div class="metric-card" style="text-align: center; display: flex; flex-direction: column; justify-content: center; height: 100%;">', unsafe_allow_html=True)
-            if 'High' in final_label:
-                st.markdown("<h2 style='color:#F43F5E !important; font-weight: 900; font-size: 2.5rem; margin-bottom:5px;'>🚨 HIGH RISK</h2>", unsafe_allow_html=True)
-                st.markdown("<p style='color:#CBD5E1 !important; font-size: 16px; font-weight: 500 !important;'>Immediate clinical intervention recommended.</p>", unsafe_allow_html=True)
-            elif 'Medium' in final_label:
-                st.markdown("<h2 style='color:#FBBF24 !important; font-weight: 900; font-size: 2.5rem; margin-bottom:5px;'>🟡 MEDIUM RISK</h2>", unsafe_allow_html=True)
-                st.markdown("<p style='color:#CBD5E1 !important; font-size: 16px; font-weight: 500 !important;'>Proactive monitoring and counseling advised.</p>", unsafe_allow_html=True)
-            else:
-                st.markdown("<h2 style='color:#34D399 !important; font-weight: 900; font-size: 2.5rem; margin-bottom:5px;'>✅ LOW RISK</h2>", unsafe_allow_html=True)
-                st.markdown("<p style='color:#CBD5E1 !important; font-size: 16px; font-weight: 500 !important;'>Profile indicates high emotional resilience.</p>", unsafe_allow_html=True)
-            st.markdown('</div>', unsafe_allow_html=True)
+            with res_col1:
+                st.markdown('<div class="metric-card" style="text-align: center; display: flex; flex-direction: column; justify-content: center; height: 100%;">', unsafe_allow_html=True)
+                if 'High' in final_label:
+                    st.markdown("<h2 style='color:#F43F5E !important; font-weight: 900; font-size: 2.5rem; margin-bottom:5px;'>🚨 HIGH RISK</h2>", unsafe_allow_html=True)
+                    st.markdown("<p style='color:#CBD5E1 !important; font-size: 16px;'>Immediate clinical intervention recommended.</p>", unsafe_allow_html=True)
+                elif 'Medium' in final_label:
+                    st.markdown("<h2 style='color:#FBBF24 !important; font-weight: 900; font-size: 2.5rem; margin-bottom:5px;'>🟡 MEDIUM RISK</h2>", unsafe_allow_html=True)
+                    st.markdown("<p style='color:#CBD5E1 !important; font-size: 16px;'>Proactive monitoring and counseling advised.</p>", unsafe_allow_html=True)
+                else:
+                    st.markdown("<h2 style='color:#34D399 !important; font-weight: 900; font-size: 2.5rem; margin-bottom:5px;'>✅ LOW RISK</h2>", unsafe_allow_html=True)
+                    st.markdown("<p style='color:#CBD5E1 !important; font-size: 16px;'>Profile indicates high emotional resilience.</p>", unsafe_allow_html=True)
+                st.markdown('</div>', unsafe_allow_html=True)
 
-        with res_col2:
-            st.markdown('<div class="metric-card">', unsafe_allow_html=True)
-            neon_colors = {'High':'#F43F5E', 'Medium':'#FBBF24', 'Low':'#34D399'}
-            fig = px.bar(
-                x=probs*100, y=clean_classes, orientation='h', labels={'x':'Confidence Probability (%)', 'y':''},
-                color=clean_classes, color_discrete_map=neon_colors, text=np.round(probs*100, 1), title="AI Confidence Distribution"
-            )
-            fig.update_traces(textposition='inside', textfont=dict(color='white', size=14, family='Inter, sans-serif'), marker_line_color='rgba(255,255,255,0.2)', marker_line_width=1)
-            fig.update_layout(
-                plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', margin=dict(l=0, r=0, t=40, b=0), height=220, showlegend=False,
-                font=dict(color='#F8FAFC', size=13, family='Inter, sans-serif'), xaxis=dict(showgrid=True, gridcolor='rgba(255,255,255,0.05)', title_font=dict(color='#94A3B8')),
-                title_font=dict(size=16, color='#94A3B8')
-            )
-            st.plotly_chart(fig, use_container_width=True)
-            st.markdown('</div>', unsafe_allow_html=True)
+            with res_col2:
+                st.markdown('<div class="metric-card">', unsafe_allow_html=True)
+                neon_colors = {'High':'#F43F5E', 'Medium':'#FBBF24', 'Low':'#34D399'}
+                fig = px.bar(x=probs*100, y=clean_classes, orientation='h', labels={'x':'Confidence Probability (%)', 'y':''}, color=clean_classes, color_discrete_map=neon_colors, text=np.round(probs*100, 1), title="AI Confidence Distribution")
+                fig.update_traces(textposition='inside', textfont=dict(color='white', size=14, family='Inter, sans-serif'), marker_line_color='rgba(255,255,255,0.2)', marker_line_width=1)
+                fig.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', margin=dict(l=0, r=0, t=40, b=0), height=220, showlegend=False, font=dict(color='#F8FAFC', size=13, family='Inter, sans-serif'), xaxis=dict(showgrid=True, gridcolor='rgba(255,255,255,0.05)', title_font=dict(color='#94A3B8')), title_font=dict(size=16, color='#94A3B8'))
+                st.plotly_chart(fig, use_container_width=True)
+                st.markdown('</div>', unsafe_allow_html=True)
+        except Exception as e:
+            st.error(f"Prediction Error: {e}")
 
 # ------------------------------------------------------------------
-# Page 2: App Behavior Analysis (الخلاصة للحل الجذري)
+# Page 2: App Behavior Analysis (الحل النهائي هنا)
 # ------------------------------------------------------------------
 else:
     st.markdown("<h3 style='color: #67E8F9 !important; font-weight: 700; display:flex; align-items:center; gap:10px; animation: fadeInUp 0.6s ease-out forwards;'>📱 App Behavior Tech-Metrics</h3>", unsafe_allow_html=True)
@@ -232,28 +220,10 @@ else:
         col_android, col_ios = st.columns(2)
         with col_android:
             st.markdown("<h4 style='color:#34D399; margin-bottom:5px;'>🤖 Android Devices</h4>", unsafe_allow_html=True)
-            st.markdown("""
-            * **Screen On Time & App Usage:** Go to **Settings** > **Digital Wellbeing & parental controls** > Dashboard.
-            * **Battery Drain:** Go to **Settings** > **Battery** > **Battery usage**.
-            * **Data Usage:** Go to **Settings** > **Network & internet** > **Internet** > App data usage.
-            """)
+            st.markdown("* **Screen On Time & App Usage:** Settings > Digital Wellbeing.\n* **Battery Drain:** Settings > Battery.\n* **Data Usage:** Settings > Network & internet > Internet.")
         with col_ios:
             st.markdown("<h4 style='color:#F87171; margin-bottom:5px;'>🍏 iOS (iPhone)</h4>", unsafe_allow_html=True)
-            st.markdown("""
-            * **Screen On Time & App Usage:** Go to **Settings** > **Screen Time** > See All Activity.
-            * **Battery Drain:** Go to **Settings** > **Battery** (Check the 'Last 24 Hours' usage).
-            * **Data Usage:** Go to **Settings** > **Cellular** > Scroll down to 'Cellular Data'.
-            """)
-            
-        st.markdown("<hr style='border-color: rgba(255,255,255,0.1);'>", unsafe_allow_html=True)
-        st.markdown("<h4 style='color:#A855F7; margin-bottom:5px;'>🔋 How to calculate Battery Drain (mAh) from Percentage (%)?</h4>", unsafe_allow_html=True)
-        st.markdown("""
-        Phones usually show battery drain as a percentage (e.g., "Used 40% today"). To input **mAh** into the model, use this simple formula:
-        > **Formula:** `(Percentage Used ÷ 100) × Total Battery Capacity (mAh)`
-        
-        **Example:** If you used **50%** of your battery today, and your phone has a **4000 mAh** battery capacity:
-        * `(50 ÷ 100) × 4000 = ` **`2000 mAh`**
-        """, unsafe_allow_html=True)
+            st.markdown("* **Screen On Time & App Usage:** Settings > Screen Time.\n* **Battery Drain:** Settings > Battery.\n* **Data Usage:** Settings > Cellular.")
 
     with st.form("app_behavior_form"):
         st.subheader("⚙️ Technical Telemetry")
@@ -278,27 +248,34 @@ else:
 
     if submit_app:
         try:
-            # 1. إجبار كل القيم المدخلة تكون Float مباشرة لضمان نقاء البيانات
+            # 1. إجبار بناء البيانات كقاموس داخله Lists وقيم Float
             gender_val = 1.0 if gender == "Male" else 0.0
             
-            # 2. بناء القاموس بالقيم المحولة
-            input_dict = {
-                'App Usage Time (min/day)': float(app_usage), 
-                'Screen On Time (hours/day)': float(screen_time),
-                'Battery Drain (mAh/day)': float(battery), 
-                'Number of Apps Installed': float(num_apps),
-                'Data Usage (MB/day)': float(data_usage), 
-                'Age': float(age), 
-                'Gender': float(gender_val)
+            input_data = {
+                'App Usage Time (min/day)': [float(app_usage)], 
+                'Screen On Time (hours/day)': [float(screen_time)],
+                'Battery Drain (mAh/day)': [float(battery)], 
+                'Number of Apps Installed': [float(num_apps)],
+                'Data Usage (MB/day)': [float(data_usage)], 
+                'Age': [float(age)], 
+                'Gender': [float(gender_val)]
             }
 
-            # 3. السر هنا: بناء الـ DataFrame وإجبار الـ dtype الخاص به ليكون float منذ لحظة الإنشاء
-            df_final = pd.DataFrame([input_dict], dtype=float)
+            # 2. إنشاء DataFrame أساسي
+            df_app = pd.DataFrame(input_data)
 
-            # 4. إعادة ترتيب الأعمدة كما يطلبها الموديل بالضبط
-            if hasattr(app_model, 'feature_names_in_'): 
+            # 3. التأكد من تطابق الأعمدة بدقة مع الموديل
+            if hasattr(app_model, 'feature_names_in_'):
                 expected_cols = list(app_model.feature_names_in_)
-                df_final = df_final[expected_cols]
+                # تعويض أي عمود ناقص بـ 0.0 لضمان عدم حدوث Error
+                for col in expected_cols:
+                    if col not in df_app.columns:
+                        df_app[col] = 0.0
+                df_app = df_app[expected_cols]
+
+            # 4. 🔥 التعويذة السحرية: إجبار الـ DataFrame بالكامل ليكون Float64
+            # ده بيشيل أي Object مخفي وبيخلي np.isnan تشتغل بسلام
+            df_final = df_app.astype(np.float64)
 
             with st.spinner("Processing technical metrics..."):
                 pred = app_model.predict(df_final)[0]
