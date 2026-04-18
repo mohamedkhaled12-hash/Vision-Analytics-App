@@ -12,25 +12,18 @@ st.set_page_config(page_title="Vision Analytics AI", page_icon="✨", layout="wi
 # ==========================================
 st.markdown("""
 <style>
-    /* 1. الخلفية الأساسية (Deep Space) - بدون تغيير الألوان */
     .stApp {
         background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #020617 100%) !important;
         background-attachment: fixed;
     }
-
-    /* إخفاء الشريط العلوي */
     [data-testid="stHeader"] { background-color: transparent !important; }
     [data-testid="stHeader"] * { color: #F8FAFC !important; }
-
-    /* 2. الخطوط والعناوين العامة */
     h1, h2, h3, label, p, li {
         color: #F8FAFC !important;
         font-family: 'Inter', 'Segoe UI', -apple-system, sans-serif;
         font-weight: 600 !important;
         letter-spacing: 0.2px;
     }
-
-    /* تأثير العنوان الرئيسي (Glow & Gradient) */
     .gradient-text {
         background: linear-gradient(135deg, #A855F7 0%, #38BDF8 100%);
         -webkit-background-clip: text;
@@ -40,24 +33,17 @@ st.markdown("""
         text-align: center;
         margin-top: -20px;
         letter-spacing: -1px;
-        text-shadow: 0px 4px 20px rgba(168, 85, 247, 0.3); /* توهج خلف العنوان */
+        text-shadow: 0px 4px 20px rgba(168, 85, 247, 0.3);
     }
-
-    /* ==========================================
-       🚀 الانبهار الحركي (Animations)
-       ========================================== */
     @keyframes fadeInUp {
         0% { opacity: 0; transform: translateY(30px); }
         100% { opacity: 1; transform: translateY(0); }
     }
-
     @keyframes pulseGlow {
         0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.5); }
         70% { box-shadow: 0 0 0 12px rgba(59, 130, 246, 0); }
         100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
     }
-
-    /* 3. الكروت الزجاجية (مع حركة الدخول وتأثير الطفو) */
     [data-testid="stForm"], .metric-card {
         background: rgba(15, 23, 42, 0.45) !important;
         backdrop-filter: blur(20px);
@@ -67,19 +53,14 @@ st.markdown("""
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
         border: 1px solid rgba(255, 255, 255, 0.08);
         transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
-        animation: fadeInUp 0.8s ease-out forwards; /* الدخول السينمائي */
+        animation: fadeInUp 0.8s ease-out forwards;
     }
-    
-    /* الكارت يترفع لفوق لما تقف عليه بالماوس */
     [data-testid="stForm"]:hover, .metric-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
         border: 1px solid rgba(255, 255, 255, 0.15);
     }
-
-    /* 4. مربعات الإدخال (نفس الألوان مع تفاعل أنعم) */
-    div[data-baseweb="select"] > div,
-    div[data-baseweb="base-input"] > input {
+    div[data-baseweb="select"] > div, div[data-baseweb="base-input"] > input {
         background-color: #F8FAFC !important;
         color: #0F172A !important;
         font-weight: 700 !important;
@@ -90,99 +71,45 @@ st.markdown("""
         box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
         transition: all 0.3s ease;
     }
-    div[data-baseweb="select"] > div:hover,
-    div[data-baseweb="base-input"] > input:hover {
+    div[data-baseweb="select"] > div:hover, div[data-baseweb="base-input"] > input:hover {
         border: 2px solid rgba(56, 189, 248, 0.5) !important;
-        transform: scale(1.01); /* تكبير خفيف جداً للمربع */
+        transform: scale(1.01);
     }
-
-    /* القائمة المنسدلة */
-    ul[data-baseweb="menu"] {
-        background-color: #F8FAFC !important;
-        border-radius: 10px !important;
-        box-shadow: 0 15px 35px rgba(0,0,0,0.3) !important;
-    }
-    ul[data-baseweb="menu"] li {
-        color: #0F172A !important;
-        font-weight: 600 !important;
-        font-size: 14px !important;
-        padding: 10px 15px !important;
-    }
-
-    /* 5. أزرار التنقل (Top Tabs) */
+    ul[data-baseweb="menu"] { background-color: #F8FAFC !important; border-radius: 10px !important; box-shadow: 0 15px 35px rgba(0,0,0,0.3) !important; }
+    ul[data-baseweb="menu"] li { color: #0F172A !important; font-weight: 600 !important; font-size: 14px !important; padding: 10px 15px !important; }
     div[role="radiogroup"] {
-        display: flex;
-        flex-direction: row;
-        justify-content: center !important;
-        gap: 8px;
-        background: rgba(15, 23, 42, 0.6);
-        padding: 6px;
-        border-radius: 100px;
-        width: fit-content;
-        margin: 0 auto 35px auto;
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(10px);
-        animation: fadeInUp 0.5s ease-out forwards;
+        display: flex; flex-direction: row; justify-content: center !important; gap: 8px;
+        background: rgba(15, 23, 42, 0.6); padding: 6px; border-radius: 100px;
+        width: fit-content; margin: 0 auto 35px auto; border: 1px solid rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px); animation: fadeInUp 0.5s ease-out forwards;
     }
     .stRadio [role="radio"] { display: none !important; }
     .stRadio label {
-        background: transparent !important;
-        padding: 10px 30px !important;
-        border-radius: 100px !important;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        margin: 0 !important;
-        border: none !important;
+        background: transparent !important; padding: 10px 30px !important;
+        border-radius: 100px !important; cursor: pointer; transition: all 0.3s ease; margin: 0 !important; border: none !important;
     }
     .stRadio label:hover { background: rgba(255, 255, 255, 0.05) !important; }
     .stRadio label:has(input:checked) {
         background: linear-gradient(135deg, #6366F1 0%, #A855F7 100%) !important;
         box-shadow: 0 4px 15px rgba(168, 85, 247, 0.5);
     }
-    .stRadio label:has(input:checked) div {
-        color: #FFFFFF !important;
-        font-weight: 800 !important;
-        letter-spacing: 0.3px;
-    }
-
-    /* 6. تصميم زر التحليل (زر بينبض لفت الانتباه) */
+    .stRadio label:has(input:checked) div { color: #FFFFFF !important; font-weight: 800 !important; letter-spacing: 0.3px; }
     [data-testid="baseButton-secondary"] {
         background: linear-gradient(135deg, #06B6D4 0%, #3B82F6 100%) !important;
-        border: none !important;
-        padding: 16px 24px !important;
-        border-radius: 12px !important;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        animation: pulseGlow 2.5s infinite; /* تأثير النبض */
+        border: none !important; padding: 16px 24px !important; border-radius: 12px !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); animation: pulseGlow 2.5s infinite;
     }
     [data-testid="baseButton-secondary"] * {
-        color: #FFFFFF !important;
-        font-weight: 800 !important;
-        font-size: 16px !important;
-        letter-spacing: 1px;
-        text-transform: uppercase;
+        color: #FFFFFF !important; font-weight: 800 !important; font-size: 16px !important;
+        letter-spacing: 1px; text-transform: uppercase;
     }
-    [data-testid="baseButton-secondary"]:hover {
-        transform: translateY(-3px) scale(1.02);
-        box-shadow: 0 15px 30px -5px rgba(59, 130, 246, 0.6) !important;
-        animation: none; /* إيقاف النبض عند وقوف الماوس */
-    }
-
-    /* تنسيق القائمة القابلة للطي (Expander) للإرشادات */
+    [data-testid="baseButton-secondary"]:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 15px 30px -5px rgba(59, 130, 246, 0.6) !important; animation: none; }
     [data-testid="stExpander"] {
-        background: rgba(15, 23, 42, 0.45) !important;
-        backdrop-filter: blur(20px);
-        border-radius: 15px !important;
-        border: 1px solid rgba(56, 189, 248, 0.3) !important;
-        margin-bottom: 20px;
-        animation: fadeInUp 0.7s ease-out forwards;
+        background: rgba(15, 23, 42, 0.45) !important; backdrop-filter: blur(20px); border-radius: 15px !important;
+        border: 1px solid rgba(56, 189, 248, 0.3) !important; margin-bottom: 20px; animation: fadeInUp 0.7s ease-out forwards;
     }
-    [data-testid="stExpander"] summary p {
-        color: #38BDF8 !important;
-        font-weight: 800 !important;
-        font-size: 16px;
-    }
+    [data-testid="stExpander"] summary p { color: #38BDF8 !important; font-weight: 800 !important; font-size: 16px; }
     [data-testid="stExpanderDetails"] { background: transparent !important; }
-
 </style>
 """, unsafe_allow_html=True)
 
@@ -246,7 +173,7 @@ if page == "Student Risk Analysis":
         features = pd.DataFrame([[
             stress_map[stress], anxiety_map[anxiety], dep_map[depression],
             support_map[support], sleep_map[sleep], exam_map[exams]
-        ]], columns=['stress_level', 'anxiety_score', 'depression_score', 'social_support', 'sleep_hours', 'exam_pressure'])
+        ]], columns=['stress_level', 'anxiety_score', 'depression_score', 'social_support', 'sleep_hours', 'exam_pressure'], dtype=float)
 
         with st.spinner("Processing neural pathways..."):
             probs = risk_model.predict_proba(features)[0]
@@ -258,12 +185,9 @@ if page == "Student Risk Analysis":
             high_prob = prob_dict.get('High', 0.0)
             medium_prob = prob_dict.get('Medium', 0.0)
             
-            if high_prob >= 0.25:
-                final_label = 'High'
-            elif medium_prob >= 0.35:
-                final_label = 'Medium'
-            else:
-                final_label = base_label
+            if high_prob >= 0.25: final_label = 'High'
+            elif medium_prob >= 0.35: final_label = 'Medium'
+            else: final_label = base_label
 
         st.markdown("<h3 style='margin-top: 35px; color:#F8FAFC; animation: fadeInUp 0.4s ease-out forwards;'>🎯 Predictive Intelligence Result</h3>", unsafe_allow_html=True)
         res_col1, res_col2 = st.columns([1, 1.5], gap="large")
@@ -284,28 +208,21 @@ if page == "Student Risk Analysis":
         with res_col2:
             st.markdown('<div class="metric-card">', unsafe_allow_html=True)
             neon_colors = {'High':'#F43F5E', 'Medium':'#FBBF24', 'Low':'#34D399'}
-
             fig = px.bar(
-                x=probs*100, y=clean_classes, orientation='h',
-                labels={'x':'Confidence Probability (%)', 'y':''},
-                color=clean_classes,
-                color_discrete_map=neon_colors,
-                text=np.round(probs*100, 1),
-                title="AI Confidence Distribution"
+                x=probs*100, y=clean_classes, orientation='h', labels={'x':'Confidence Probability (%)', 'y':''},
+                color=clean_classes, color_discrete_map=neon_colors, text=np.round(probs*100, 1), title="AI Confidence Distribution"
             )
             fig.update_traces(textposition='inside', textfont=dict(color='white', size=14, family='Inter, sans-serif'), marker_line_color='rgba(255,255,255,0.2)', marker_line_width=1)
             fig.update_layout(
-                plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)',
-                margin=dict(l=0, r=0, t=40, b=0), height=220, showlegend=False,
-                font=dict(color='#F8FAFC', size=13, family='Inter, sans-serif'),
-                xaxis=dict(showgrid=True, gridcolor='rgba(255,255,255,0.05)', title_font=dict(color='#94A3B8')),
+                plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', margin=dict(l=0, r=0, t=40, b=0), height=220, showlegend=False,
+                font=dict(color='#F8FAFC', size=13, family='Inter, sans-serif'), xaxis=dict(showgrid=True, gridcolor='rgba(255,255,255,0.05)', title_font=dict(color='#94A3B8')),
                 title_font=dict(size=16, color='#94A3B8')
             )
             st.plotly_chart(fig, use_container_width=True)
             st.markdown('</div>', unsafe_allow_html=True)
 
 # ------------------------------------------------------------------
-# Page 2: App Behavior Analysis (تم حل مشكلة النص والنوع هنا)
+# Page 2: App Behavior Analysis (الخلاصة للحل الجذري)
 # ------------------------------------------------------------------
 else:
     st.markdown("<h3 style='color: #67E8F9 !important; font-weight: 700; display:flex; align-items:center; gap:10px; animation: fadeInUp 0.6s ease-out forwards;'>📱 App Behavior Tech-Metrics</h3>", unsafe_allow_html=True)
@@ -361,41 +278,27 @@ else:
 
     if submit_app:
         try:
-            # 1. تحويل الـ Gender لرقم قبل إدخاله في الـ Dictionary
+            # 1. إجبار كل القيم المدخلة تكون Float مباشرة لضمان نقاء البيانات
             gender_val = 1.0 if gender == "Male" else 0.0
             
-            # 2. تحديد الأعمدة بشكل دقيق
-            if hasattr(app_model, 'feature_names_in_'): 
-                expected_cols = list(app_model.feature_names_in_)
-            elif hasattr(app_model, 'steps') and hasattr(app_model.steps[0][1], 'feature_names_in_'): 
-                expected_cols = list(app_model.steps[0][1].feature_names_in_)
-            else: 
-                expected_cols = ['App Usage Time (min/day)', 'Screen On Time (hours/day)', 'Battery Drain (mAh/day)', 'Number of Apps Installed', 'Data Usage (MB/day)', 'Age', 'Gender']
-
-            # 3. إعداد قاموس البيانات
-            raw_data = {
+            # 2. بناء القاموس بالقيم المحولة
+            input_dict = {
                 'App Usage Time (min/day)': float(app_usage), 
                 'Screen On Time (hours/day)': float(screen_time),
                 'Battery Drain (mAh/day)': float(battery), 
                 'Number of Apps Installed': float(num_apps),
                 'Data Usage (MB/day)': float(data_usage), 
                 'Age': float(age), 
-                'Gender': gender_val # استخدمنا الرقم المحول هنا
+                'Gender': float(gender_val)
             }
 
-            # 4. بناء الـ DataFrame بترتيب سليم وموحد النوع كـ Float
-            final_data = {}
-            for col in expected_cols:
-                clean_col = col.strip()
-                if clean_col in raw_data:
-                    final_data[col] = raw_data[clean_col]
-                elif 'gender' in clean_col.lower():
-                    final_data[col] = gender_val
-                else:
-                    final_data[col] = 0.0
+            # 3. السر هنا: بناء الـ DataFrame وإجبار الـ dtype الخاص به ليكون float منذ لحظة الإنشاء
+            df_final = pd.DataFrame([input_dict], dtype=float)
 
-            # السطر ده بيضمن إن كل القيم أرقام عشرية ولا يوجد بها نصوص عشان XGBoost
-            df_final = pd.DataFrame([final_data]).astype(float)
+            # 4. إعادة ترتيب الأعمدة كما يطلبها الموديل بالضبط
+            if hasattr(app_model, 'feature_names_in_'): 
+                expected_cols = list(app_model.feature_names_in_)
+                df_final = df_final[expected_cols]
 
             with st.spinner("Processing technical metrics..."):
                 pred = app_model.predict(df_final)[0]
