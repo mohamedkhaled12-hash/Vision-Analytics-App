@@ -40,7 +40,7 @@ st.markdown("""
         text-align: center;
         margin-top: -20px;
         letter-spacing: -1px;
-        text-shadow: 0px 4px 20px rgba(168, 85, 247, 0.3); /* توهج خلف العنوان */
+        text-shadow: 0px 4px 20px rgba(168, 85, 247, 0.3);
     }
 
     /* ==========================================
@@ -67,17 +67,16 @@ st.markdown("""
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
         border: 1px solid rgba(255, 255, 255, 0.08);
         transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
-        animation: fadeInUp 0.8s ease-out forwards; /* الدخول السينمائي */
+        animation: fadeInUp 0.8s ease-out forwards;
     }
     
-    /* الكارت يترفع لفوق لما تقف عليه بالماوس */
     [data-testid="stForm"]:hover, .metric-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
         border: 1px solid rgba(255, 255, 255, 0.15);
     }
 
-    /* 4. مربعات الإدخال (نفس الألوان مع تفاعل أنعم) */
+    /* 4. مربعات الإدخال */
     div[data-baseweb="select"] > div,
     div[data-baseweb="base-input"] > input {
         background-color: #F8FAFC !important;
@@ -93,10 +92,9 @@ st.markdown("""
     div[data-baseweb="select"] > div:hover,
     div[data-baseweb="base-input"] > input:hover {
         border: 2px solid rgba(56, 189, 248, 0.5) !important;
-        transform: scale(1.01); /* تكبير خفيف جداً للمربع */
+        transform: scale(1.01);
     }
 
-    /* القائمة المنسدلة */
     ul[data-baseweb="menu"] {
         background-color: #F8FAFC !important;
         border-radius: 10px !important;
@@ -109,7 +107,7 @@ st.markdown("""
         padding: 10px 15px !important;
     }
 
-    /* 5. أزرار التنقل (Top Tabs) */
+    /* 5. أزرار التنقل */
     div[role="radiogroup"] {
         display: flex;
         flex-direction: row;
@@ -145,14 +143,14 @@ st.markdown("""
         letter-spacing: 0.3px;
     }
 
-    /* 6. تصميم زر التحليل (زر بينبض لفت الانتباه) */
+    /* 6. تصميم زر التحليل */
     [data-testid="baseButton-secondary"] {
         background: linear-gradient(135deg, #06B6D4 0%, #3B82F6 100%) !important;
         border: none !important;
         padding: 16px 24px !important;
         border-radius: 12px !important;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        animation: pulseGlow 2.5s infinite; /* تأثير النبض */
+        animation: pulseGlow 2.5s infinite;
     }
     [data-testid="baseButton-secondary"] * {
         color: #FFFFFF !important;
@@ -164,10 +162,9 @@ st.markdown("""
     [data-testid="baseButton-secondary"]:hover {
         transform: translateY(-3px) scale(1.02);
         box-shadow: 0 15px 30px -5px rgba(59, 130, 246, 0.6) !important;
-        animation: none; /* إيقاف النبض عند وقوف الماوس */
+        animation: none;
     }
 
-    /* تنسيق القائمة القابلة للطي (Expander) للإرشادات */
     [data-testid="stExpander"] {
         background: rgba(15, 23, 42, 0.45) !important;
         backdrop-filter: blur(20px);
@@ -190,7 +187,7 @@ st.markdown("""
 @st.cache_resource
 def load_assets():
     risk_model = joblib.load('risk_model_pipeline.pkl')
-    app_model = joblib.load('app_behavior_model_xgb.pkl')
+    app_model = joblib.load('app_behavior_model_xgb.pkl') # تأكد إن ده اسم الملف الصح عندك
     encoder = joblib.load('label_encoder.pkl')
     return risk_model, app_model, encoder
 
@@ -243,9 +240,10 @@ if page == "Student Risk Analysis":
         submit_risk = st.form_submit_button("Initiate AI Analysis", use_container_width=True)
 
     if submit_risk:
+        # إجبار القيم على float لتجنب أي أخطاء dtypes
         features = pd.DataFrame([[
-            stress_map[stress], anxiety_map[anxiety], dep_map[depression],
-            support_map[support], sleep_map[sleep], exam_map[exams]
+            float(stress_map[stress]), float(anxiety_map[anxiety]), float(dep_map[depression]),
+            float(support_map[support]), float(sleep_map[sleep]), float(exam_map[exams])
         ]], columns=['stress_level', 'anxiety_score', 'depression_score', 'social_support', 'sleep_hours', 'exam_pressure'])
 
         with st.spinner("Processing neural pathways..."):
@@ -305,7 +303,7 @@ if page == "Student Risk Analysis":
             st.markdown('</div>', unsafe_allow_html=True)
 
 # ------------------------------------------------------------------
-# Page 2: App Behavior Analysis
+# Page 2: App Behavior Analysis (تم تدمير المشكلة نهائياً هنا)
 # ------------------------------------------------------------------
 else:
     st.markdown("<h3 style='color: #67E8F9 !important; font-weight: 700; display:flex; align-items:center; gap:10px; animation: fadeInUp 0.6s ease-out forwards;'>📱 App Behavior Tech-Metrics</h3>", unsafe_allow_html=True)
@@ -361,41 +359,41 @@ else:
 
     if submit_app:
         try:
-            if hasattr(app_model, 'feature_names_in_'): expected_cols = list(app_model.feature_names_in_)
-            elif hasattr(app_model, 'steps') and hasattr(app_model.steps[0][1], 'feature_names_in_'): expected_cols = list(app_model.steps[0][1].feature_names_in_)
-            else: expected_cols = ['App Usage Time (min/day)', 'Screen On Time (hours/day)', 'Battery Drain (mAh/day)', 'Number of Apps Installed', 'Data Usage (MB/day)', 'Age', 'Gender']
+            # 1. القضاء على النصوص فوراً
+            gender_val = 1.0 if gender == "Male" else 0.0
+            
+            # 2. تحديد الأعمدة بشكل دقيق وآمن
+            if hasattr(app_model, 'feature_names_in_'): 
+                expected_cols = list(app_model.feature_names_in_)
+            elif hasattr(app_model, 'steps') and hasattr(app_model.steps[0][1], 'feature_names_in_'): 
+                expected_cols = list(app_model.steps[0][1].feature_names_in_)
+            else: 
+                expected_cols = ['App Usage Time (min/day)', 'Screen On Time (hours/day)', 'Battery Drain (mAh/day)', 'Number of Apps Installed', 'Data Usage (MB/day)', 'Age', 'Gender']
 
-            raw_data = {
-                'App Usage Time (min/day)': float(app_usage), 'Screen On Time (hours/day)': float(screen_time),
-                'Battery Drain (mAh/day)': float(battery), 'Number of Apps Installed': float(num_apps),
-                'Data Usage (MB/day)': float(data_usage), 'Age': float(age), 'Gender': gender
-            }
+            # 3. بناء جدول نظيف تماماً من نوع float64 مليان أصفار
+            df_clean = pd.DataFrame(0.0, index=[0], columns=expected_cols, dtype=np.float64)
 
-            df_app = pd.DataFrame(columns=expected_cols)
-            df_app.loc[0] = 0.0
-
+            # 4. تعبئة الجدول بالقيم الآمنة فقط
             for col in expected_cols:
-                clean_col = col.strip()
-                if clean_col in raw_data: df_app.at[0, col] = raw_data[clean_col]
-                elif 'gender' in clean_col.lower(): df_app.at[0, col] = raw_data['Gender']
+                c_lower = col.lower()
+                if 'app usage' in c_lower: df_clean.at[0, col] = float(app_usage)
+                elif 'screen' in c_lower: df_clean.at[0, col] = float(screen_time)
+                elif 'battery' in c_lower: df_clean.at[0, col] = float(battery)
+                elif 'installed' in c_lower or 'number of apps' in c_lower: df_clean.at[0, col] = float(num_apps)
+                elif 'data usage' in c_lower or 'data' in c_lower: df_clean.at[0, col] = float(data_usage)
+                elif 'age' in c_lower: df_clean.at[0, col] = float(age)
+                elif 'gender' in c_lower: df_clean.at[0, col] = float(gender_val)
 
             with st.spinner("Processing technical metrics..."):
-                try:
-                    pred = app_model.predict(df_app)[0]
-                    st.markdown('<div class="metric-card" style="text-align: center; margin-top:25px; animation: fadeInUp 0.5s ease-out forwards;">', unsafe_allow_html=True)
-                    st.markdown(f"<h3 style='color:#CBD5E1 !important; font-size:1.5rem; font-weight:600; margin-bottom:10px;'>Predicted Class</h3><h1 style='color:#22D3EE !important; font-size:3.5rem; font-weight:900; margin:0;'>{pred}</h1>", unsafe_allow_html=True)
-                    st.markdown('</div>', unsafe_allow_html=True)
-                except Exception as e_inner:
-                    if 'isnan' in str(e_inner).lower() or 'convert' in str(e_inner).lower():
-                        for col in expected_cols:
-                            if 'gender' in col.lower(): df_app.at[0, col] = 1.0 if gender == "Male" else 0.0
-                        df_app = df_app.astype(float)
-                        pred = app_model.predict(df_app)[0]
-                        st.markdown('<div class="metric-card" style="text-align: center; margin-top:25px; animation: fadeInUp 0.5s ease-out forwards;">', unsafe_allow_html=True)
-                        st.markdown(f"<h3 style='color:#CBD5E1 !important; font-size:1.5rem; font-weight:600; margin-bottom:10px;'>Predicted Class</h3><h1 style='color:#22D3EE !important; font-size:3.5rem; font-weight:900; margin:0;'>{pred}</h1>", unsafe_allow_html=True)
-                        st.markdown('</div>', unsafe_allow_html=True)
-                    else:
-                        st.error(f"Prediction Error: {e_inner}")
+                # الآن الموديل يستلم DataFrame نقي جداً ومفيش فيه أي فرصة لظهور NaN أو Object
+                pred = app_model.predict(df_clean)[0]
+                
+                st.markdown(f"""
+                    <div class="metric-card" style="text-align: center; margin-top:25px; animation: fadeInUp 0.5s ease-out forwards;">
+                        <h3 style='color:#CBD5E1 !important; font-size:1.5rem; font-weight:600; margin-bottom:10px;'>Predicted Class</h3>
+                        <h1 style='color:#22D3EE !important; font-size:3.5rem; font-weight:900; margin:0;'>{int(pred)}</h1>
+                    </div>
+                """, unsafe_allow_html=True)
 
         except Exception as e_outer:
             st.error(f"Unexpected Error: {e_outer}")
