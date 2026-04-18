@@ -3,7 +3,6 @@ import pandas as pd
 import joblib
 import numpy as np
 import plotly.express as px
-import xgboost as xgb  # استيراد مكتبة xgboost مباشرة
 
 # 1. Page Config
 st.set_page_config(page_title="Vision Analytics AI", page_icon="✨", layout="wide")
@@ -58,6 +57,7 @@ st.markdown("""
     }
     [data-testid="stForm"]:hover, .metric-card:hover {
         transform: translateY(-5px);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
         border: 1px solid rgba(255, 255, 255, 0.15);
     }
     div[data-baseweb="select"] > div,
@@ -78,13 +78,6 @@ st.markdown("""
         width: fit-content;
         margin: 0 auto 35px auto;
         animation: fadeInUp 0.5s ease-out forwards;
-    }
-    .stRadio [role="radio"] { display: none !important; }
-    .stRadio label {
-        padding: 10px 30px !important;
-        border-radius: 100px !important;
-        cursor: pointer;
-        transition: all 0.3s ease;
     }
     .stRadio label:has(input:checked) {
         background: linear-gradient(135deg, #6366F1 0%, #A855F7 100%) !important;
@@ -179,7 +172,7 @@ if page == "Student Risk Analysis":
             st.markdown('</div>', unsafe_allow_html=True)
 
 # ------------------------------------------------------------------
-# Page 2: App Behavior Analysis (FIXED SECTION)
+# Page 2: App Behavior Analysis (THE ULTIMATE SYNC)
 # ------------------------------------------------------------------
 else:
     st.markdown("<h3 style='color: #67E8F9 !important;'>📱 App Behavior Tech-Metrics</h3>", unsafe_allow_html=True)
@@ -202,34 +195,34 @@ else:
             # 1. Encoding
             gender_val = 1.0 if gender == "Male" else 0.0
             
-            # 2. Creating Raw Data
+            # 2. Raw Dictionary
             input_dict = {
-                'App Usage Time (min/day)': float(app_usage),
-                'Screen On Time (hours/day)': float(screen_time),
-                'Battery Drain (mAh/day)': float(battery),
-                'Number of Apps Installed': float(num_apps),
-                'Data Usage (MB/day)': float(data_usage),
-                'Age': float(age),
+                'App Usage Time (min/day)': app_usage,
+                'Screen On Time (hours/day)': screen_time,
+                'Battery Drain (mAh/day)': battery,
+                'Number of Apps Installed': num_apps,
+                'Data Usage (MB/day)': data_usage,
+                'Age': age,
                 'Gender': gender_val
             }
             
-            # 3. Match Order & Transform (الحل العبقري)
+            # 3. 🔥 THE FINAL SYNC: Create DF and Force Float One by One
+            # إحنا بنعمل الداتا فريم، وبنجبر كل خلية تكون Float64 بشكل صريح 
+            # ده بيرضي الـ Pipeline (عشان فيه أسماء أعمدة) وبيرضي الـ isnan (عشان النوع موحد)
+            df_app = pd.DataFrame([input_dict])
+            
+            # تحويل كل الأعمدة لأرقام عشرية عشان ننهي خناقة الـ Types
+            for col in df_app.columns:
+                df_app[col] = pd.to_numeric(df_app[col], errors='coerce').astype(float)
+
+            # ترتيب الأعمدة لو الموديل طالب ترتيب معين
             if hasattr(app_model, 'feature_names_in_'):
                 expected = list(app_model.feature_names_in_)
-                df_app = pd.DataFrame([input_dict])[expected]
-            else:
-                df_app = pd.DataFrame([input_dict])
+                df_app = df_app[expected]
 
             with st.spinner("Analyzing..."):
-                # ==========================================
-                # 🔥 THE NUCLEAR OPTION (الحل النووي)
-                # نحول الداتا فريم لمصفوفة بايثون عادية (Nested List)
-                # بايثون عادية مش Numpy يعني مستحيل isnan تضرب
-                # ==========================================
-                raw_list = df_app.values.tolist()
-                
-                # استخدام الموديل مباشرة على القائمة
-                pred = app_model.predict(raw_list)[0]
+                # نبعت الـ DataFrame "الشيك" اللي بأسماء أعمدة وأنواع بيانات موحدة
+                pred = app_model.predict(df_app)[0]
                 
                 st.markdown(f"""
                     <div class="metric-card" style="text-align: center; margin-top:25px;">
