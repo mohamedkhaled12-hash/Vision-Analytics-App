@@ -305,7 +305,7 @@ if page == "Student Risk Analysis":
             st.markdown('</div>', unsafe_allow_html=True)
 
 # ------------------------------------------------------------------
-# Page 2: App Behavior Analysis
+# Page 2: App Behavior Analysis (تم حل مشكلة النص والنوع هنا)
 # ------------------------------------------------------------------
 else:
     st.markdown("<h3 style='color: #67E8F9 !important; font-weight: 700; display:flex; align-items:center; gap:10px; animation: fadeInUp 0.6s ease-out forwards;'>📱 App Behavior Tech-Metrics</h3>", unsafe_allow_html=True)
@@ -361,41 +361,51 @@ else:
 
     if submit_app:
         try:
-            if hasattr(app_model, 'feature_names_in_'): expected_cols = list(app_model.feature_names_in_)
-            elif hasattr(app_model, 'steps') and hasattr(app_model.steps[0][1], 'feature_names_in_'): expected_cols = list(app_model.steps[0][1].feature_names_in_)
-            else: expected_cols = ['App Usage Time (min/day)', 'Screen On Time (hours/day)', 'Battery Drain (mAh/day)', 'Number of Apps Installed', 'Data Usage (MB/day)', 'Age', 'Gender']
+            # 1. تحويل الـ Gender لرقم قبل إدخاله في الـ Dictionary
+            gender_val = 1.0 if gender == "Male" else 0.0
+            
+            # 2. تحديد الأعمدة بشكل دقيق
+            if hasattr(app_model, 'feature_names_in_'): 
+                expected_cols = list(app_model.feature_names_in_)
+            elif hasattr(app_model, 'steps') and hasattr(app_model.steps[0][1], 'feature_names_in_'): 
+                expected_cols = list(app_model.steps[0][1].feature_names_in_)
+            else: 
+                expected_cols = ['App Usage Time (min/day)', 'Screen On Time (hours/day)', 'Battery Drain (mAh/day)', 'Number of Apps Installed', 'Data Usage (MB/day)', 'Age', 'Gender']
 
+            # 3. إعداد قاموس البيانات
             raw_data = {
-                'App Usage Time (min/day)': float(app_usage), 'Screen On Time (hours/day)': float(screen_time),
-                'Battery Drain (mAh/day)': float(battery), 'Number of Apps Installed': float(num_apps),
-                'Data Usage (MB/day)': float(data_usage), 'Age': float(age), 'Gender': gender
+                'App Usage Time (min/day)': float(app_usage), 
+                'Screen On Time (hours/day)': float(screen_time),
+                'Battery Drain (mAh/day)': float(battery), 
+                'Number of Apps Installed': float(num_apps),
+                'Data Usage (MB/day)': float(data_usage), 
+                'Age': float(age), 
+                'Gender': gender_val # استخدمنا الرقم المحول هنا
             }
 
-            df_app = pd.DataFrame(columns=expected_cols)
-            df_app.loc[0] = 0.0
-
+            # 4. بناء الـ DataFrame بترتيب سليم وموحد النوع كـ Float
+            final_data = {}
             for col in expected_cols:
                 clean_col = col.strip()
-                if clean_col in raw_data: df_app.at[0, col] = raw_data[clean_col]
-                elif 'gender' in clean_col.lower(): df_app.at[0, col] = raw_data['Gender']
+                if clean_col in raw_data:
+                    final_data[col] = raw_data[clean_col]
+                elif 'gender' in clean_col.lower():
+                    final_data[col] = gender_val
+                else:
+                    final_data[col] = 0.0
+
+            # السطر ده بيضمن إن كل القيم أرقام عشرية ولا يوجد بها نصوص عشان XGBoost
+            df_final = pd.DataFrame([final_data]).astype(float)
 
             with st.spinner("Processing technical metrics..."):
-                try:
-                    pred = app_model.predict(df_app)[0]
-                    st.markdown('<div class="metric-card" style="text-align: center; margin-top:25px; animation: fadeInUp 0.5s ease-out forwards;">', unsafe_allow_html=True)
-                    st.markdown(f"<h3 style='color:#CBD5E1 !important; font-size:1.5rem; font-weight:600; margin-bottom:10px;'>Predicted Class</h3><h1 style='color:#22D3EE !important; font-size:3.5rem; font-weight:900; margin:0;'>{pred}</h1>", unsafe_allow_html=True)
-                    st.markdown('</div>', unsafe_allow_html=True)
-                except Exception as e_inner:
-                    if 'isnan' in str(e_inner).lower() or 'convert' in str(e_inner).lower():
-                        for col in expected_cols:
-                            if 'gender' in col.lower(): df_app.at[0, col] = 1.0 if gender == "Male" else 0.0
-                        df_app = df_app.astype(float)
-                        pred = app_model.predict(df_app)[0]
-                        st.markdown('<div class="metric-card" style="text-align: center; margin-top:25px; animation: fadeInUp 0.5s ease-out forwards;">', unsafe_allow_html=True)
-                        st.markdown(f"<h3 style='color:#CBD5E1 !important; font-size:1.5rem; font-weight:600; margin-bottom:10px;'>Predicted Class</h3><h1 style='color:#22D3EE !important; font-size:3.5rem; font-weight:900; margin:0;'>{pred}</h1>", unsafe_allow_html=True)
-                        st.markdown('</div>', unsafe_allow_html=True)
-                    else:
-                        st.error(f"Prediction Error: {e_inner}")
+                pred = app_model.predict(df_final)[0]
+                
+                st.markdown(f"""
+                    <div class="metric-card" style="text-align: center; margin-top:25px; animation: fadeInUp 0.5s ease-out forwards;">
+                        <h3 style='color:#CBD5E1 !important; font-size:1.5rem; font-weight:600; margin-bottom:10px;'>Predicted Class</h3>
+                        <h1 style='color:#22D3EE !important; font-size:3.5rem; font-weight:900; margin:0;'>{int(pred)}</h1>
+                    </div>
+                """, unsafe_allow_html=True)
 
-        except Exception as e_outer:
-            st.error(f"Unexpected Error: {e_outer}")
+        except Exception as e:
+            st.error(f"Prediction Error: {e}")
