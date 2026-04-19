@@ -15,39 +15,177 @@ st.set_page_config(page_title="Vision Analytics AI", page_icon="✨", layout="wi
 # ==========================================
 st.markdown("""
 <style>
-    .stApp { background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #020617 100%) !important; background-attachment: fixed; }
+    /* 1. الخلفية الأساسية (Deep Space) - بدون تغيير الألوان */
+    .stApp {
+        background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #020617 100%) !important;
+        background-attachment: fixed;
+    }
+
+    /* إخفاء الشريط العلوي */
     [data-testid="stHeader"] { background-color: transparent !important; }
     [data-testid="stHeader"] * { color: #F8FAFC !important; }
-    h1, h2, h3, label, p, li { color: #F8FAFC !important; font-family: 'Inter', sans-serif; font-weight: 600 !important; }
+
+    /* 2. الخطوط والعناوين العامة */
+    h1, h2, h3, label, p, li {
+        color: #F8FAFC !important;
+        font-family: 'Inter', 'Segoe UI', -apple-system, sans-serif;
+        font-weight: 600 !important;
+        letter-spacing: 0.2px;
+    }
+
+    /* تأثير العنوان الرئيسي (Glow & Gradient) */
     .gradient-text {
-        background: linear-gradient(135deg, #A855F7 0%, #38BDF8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        font-weight: 900; font-size: 3.2rem; text-align: center; margin-top: -20px; text-shadow: 0px 4px 20px rgba(168, 85, 247, 0.3);
+        background: linear-gradient(135deg, #A855F7 0%, #38BDF8 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 900;
+        font-size: 3.2rem;
+        text-align: center;
+        margin-top: -20px;
+        letter-spacing: -1px;
+        text-shadow: 0px 4px 20px rgba(168, 85, 247, 0.3); /* توهج خلف العنوان */
     }
-    @keyframes fadeInUp { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
-    @keyframes pulseGlow { 0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.5); } 70% { box-shadow: 0 0 0 12px rgba(59, 130, 246, 0); } 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); } }
+
+    /* ==========================================
+       🚀 الانبهار الحركي (Animations)
+       ========================================== */
+    @keyframes fadeInUp {
+        0% { opacity: 0; transform: translateY(30px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulseGlow {
+        0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.5); }
+        70% { box-shadow: 0 0 0 12px rgba(59, 130, 246, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+    }
+
+    /* 3. الكروت الزجاجية (مع حركة الدخول وتأثير الطفو) */
     [data-testid="stForm"], .metric-card {
-        background: rgba(15, 23, 42, 0.45) !important; backdrop-filter: blur(20px); border-radius: 20px; padding: 30px;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.08); animation: fadeInUp 0.8s ease-out forwards;
+        background: rgba(15, 23, 42, 0.45) !important;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+        animation: fadeInUp 0.8s ease-out forwards; /* الدخول السينمائي */
     }
-    [data-testid="stForm"]:hover, .metric-card:hover { transform: translateY(-5px); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6); border: 1px solid rgba(255, 255, 255, 0.15); }
-    div[data-baseweb="select"] > div, div[data-baseweb="base-input"] > input {
-        background-color: #F8FAFC !important; color: #0F172A !important; font-weight: 700 !important; font-size: 15px !important;
-        border-radius: 10px !important; border: 2px solid transparent !important; -webkit-text-fill-color: #0F172A !important; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+    
+    /* الكارت يترفع لفوق لما تقف عليه بالماوس */
+    [data-testid="stForm"]:hover, .metric-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.15);
     }
+
+    /* 4. مربعات الإدخال (نفس الألوان مع تفاعل أنعم) */
+    div[data-baseweb="select"] > div,
+    div[data-baseweb="base-input"] > input {
+        background-color: #F8FAFC !important;
+        color: #0F172A !important;
+        font-weight: 700 !important;
+        font-size: 15px !important;
+        border-radius: 10px !important;
+        border: 2px solid transparent !important;
+        -webkit-text-fill-color: #0F172A !important;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+    }
+    div[data-baseweb="select"] > div:hover,
+    div[data-baseweb="base-input"] > input:hover {
+        border: 2px solid rgba(56, 189, 248, 0.5) !important;
+        transform: scale(1.01); /* تكبير خفيف جداً للمربع */
+    }
+
+    /* القائمة المنسدلة */
+    ul[data-baseweb="menu"] {
+        background-color: #F8FAFC !important;
+        border-radius: 10px !important;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.3) !important;
+    }
+    ul[data-baseweb="menu"] li {
+        color: #0F172A !important;
+        font-weight: 600 !important;
+        font-size: 14px !important;
+        padding: 10px 15px !important;
+    }
+
+    /* 5. أزرار التنقل (Top Tabs) */
     div[role="radiogroup"] {
-        display: flex; justify-content: center !important; gap: 8px; background: rgba(15, 23, 42, 0.6); padding: 6px; border-radius: 100px;
-        width: fit-content; margin: 0 auto 35px auto; animation: fadeInUp 0.5s ease-out forwards;
+        display: flex;
+        flex-direction: row;
+        justify-content: center !important;
+        gap: 8px;
+        background: rgba(15, 23, 42, 0.6);
+        padding: 6px;
+        border-radius: 100px;
+        width: fit-content;
+        margin: 0 auto 35px auto;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        animation: fadeInUp 0.5s ease-out forwards;
     }
     .stRadio [role="radio"] { display: none !important; }
-    .stRadio label { background: transparent !important; padding: 10px 30px !important; border-radius: 100px !important; cursor: pointer; margin: 0 !important; border: none !important; }
-    .stRadio label:has(input:checked) { background: linear-gradient(135deg, #6366F1 0%, #A855F7 100%) !important; box-shadow: 0 4px 15px rgba(168, 85, 247, 0.5); }
-    .stRadio label:has(input:checked) div { color: #FFFFFF !important; font-weight: 800 !important; }
-    [data-testid="baseButton-secondary"] {
-        background: linear-gradient(135deg, #06B6D4 0%, #3B82F6 100%) !important; border: none !important; padding: 16px 24px !important;
-        border-radius: 12px !important; animation: pulseGlow 2.5s infinite;
+    .stRadio label {
+        background: transparent !important;
+        padding: 10px 30px !important;
+        border-radius: 100px !important;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin: 0 !important;
+        border: none !important;
     }
-    [data-testid="baseButton-secondary"] * { color: #FFFFFF !important; font-weight: 800 !important; text-transform: uppercase; }
-    [data-testid="baseButton-secondary"]:hover { transform: translateY(-3px) scale(1.02); animation: none; }
+    .stRadio label:hover { background: rgba(255, 255, 255, 0.05) !important; }
+    .stRadio label:has(input:checked) {
+        background: linear-gradient(135deg, #6366F1 0%, #A855F7 100%) !important;
+        box-shadow: 0 4px 15px rgba(168, 85, 247, 0.5);
+    }
+    .stRadio label:has(input:checked) div {
+        color: #FFFFFF !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.3px;
+    }
+
+    /* 6. تصميم زر التحليل (زر بينبض لفت الانتباه) */
+    [data-testid="baseButton-secondary"] {
+        background: linear-gradient(135deg, #06B6D4 0%, #3B82F6 100%) !important;
+        border: none !important;
+        padding: 16px 24px !important;
+        border-radius: 12px !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        animation: pulseGlow 2.5s infinite; /* تأثير النبض */
+    }
+    [data-testid="baseButton-secondary"] * {
+        color: #FFFFFF !important;
+        font-weight: 800 !important;
+        font-size: 16px !important;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+    [data-testid="baseButton-secondary"]:hover {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 15px 30px -5px rgba(59, 130, 246, 0.6) !important;
+        animation: none; /* إيقاف النبض عند وقوف الماوس */
+    }
+
+    /* تنسيق القائمة القابلة للطي (Expander) للإرشادات */
+    [data-testid="stExpander"] {
+        background: rgba(15, 23, 42, 0.45) !important;
+        backdrop-filter: blur(20px);
+        border-radius: 15px !important;
+        border: 1px solid rgba(56, 189, 248, 0.3) !important;
+        margin-bottom: 20px;
+        animation: fadeInUp 0.7s ease-out forwards;
+    }
+    [data-testid="stExpander"] summary p {
+        color: #38BDF8 !important;
+        font-weight: 800 !important;
+        font-size: 16px;
+    }
+    [data-testid="stExpanderDetails"] { background: transparent !important; }
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -65,14 +203,20 @@ except Exception as e:
     st.error(f"⚠️ Failed to load models. Error: {e}")
     st.stop()
 
+# ==========================================
+# 🚀 Navigation Header
+# ==========================================
 st.markdown("<div class='gradient-text'>Vision Analytics</div>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #94A3B8 !important; margin-bottom: 25px; font-size: 1.1rem; animation: fadeInUp 0.4s ease-out forwards;'>Empowered by Advanced Machine Learning</p>", unsafe_allow_html=True)
+
 page = st.radio("", ["Student Risk Analysis", "App Behavior Analysis"], horizontal=True, label_visibility="collapsed")
 
 # ------------------------------------------------------------------
 # Page 1: Student Risk Analysis
 # ------------------------------------------------------------------
 if page == "Student Risk Analysis":
-    st.markdown("<h3 style='color: #E9D5FF !important;'>🧠 Student Risk Intelligence</h3>", unsafe_allow_html=True)
+    st.markdown("<h3 style='color: #E9D5FF !important; font-weight: 700; display:flex; align-items:center; gap:10px; animation: fadeInUp 0.6s ease-out forwards;'>🧠 Student Risk Intelligence</h3>", unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
 
     stress_map = {"Very Calm": 1.0, "Normal Stress": 4.0, "Highly Stressed": 7.0, "Extremely Stressed": 10.0}
     anxiety_map = {"Stable": 1.0, "Mild Anxiety": 3.5, "Constant Tension": 7.0, "Severe Panic": 10.0}
@@ -82,12 +226,17 @@ if page == "Student Risk Analysis":
     exam_map = {"No Immediate Exams": 1.0, "Manageable Workload": 4.0, "High Academic Stress": 7.5, "Overwhelming Pressure": 10.0}
 
     with st.form("risk_form"):
+        st.subheader("📋 Behavioral Assessment")
+        st.markdown("<hr style='border-color: rgba(255,255,255,0.1); margin: 10px 0 25px 0;'>", unsafe_allow_html=True)
         col1, col2 = st.columns(2, gap="large")
+
         with col1:
+            st.markdown("<b style='color:#38BDF8 !important; font-size: 18px;'>🧬 Psychological Factors</b>", unsafe_allow_html=True)
             stress = st.selectbox("Stress Level:", list(stress_map.keys()))
             anxiety = st.selectbox("Anxiety Level:", list(anxiety_map.keys()))
             depression = st.selectbox("Mood & Energy:", list(dep_map.keys()))
         with col2:
+            st.markdown("<b style='color:#38BDF8 !important; font-size: 18px;'>🌍 Environmental Factors</b>", unsafe_allow_html=True)
             support = st.selectbox("Social Support:", list(support_map.keys()))
             sleep = st.selectbox("Daily Sleep:", list(sleep_map.keys()))
             exams = st.selectbox("Academic Workload:", list(exam_map.keys()))
@@ -125,12 +274,44 @@ if page == "Student Risk Analysis":
             st.markdown('</div>', unsafe_allow_html=True)
 
 # ------------------------------------------------------------------
-# Page 2: App Behavior Analysis (النسخة الذكية لاكتشاف الأخطاء)
+# Page 2: App Behavior Analysis (النسخة الذكية لاكتشاف الأخطاء + الإرشادات)
 # ------------------------------------------------------------------
 else:
     st.markdown("<h3 style='color: #67E8F9 !important;'>📱 App Behavior Tech-Metrics</h3>", unsafe_allow_html=True)
-    
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # 💡 إضافة الإرشادات باللغة الإنجليزية كما طلبت
+    with st.expander("💡 Guide: How to find these metrics on your phone?"):
+        col_android, col_ios = st.columns(2)
+        
+        with col_android:
+            st.markdown("<h4 style='color:#34D399; margin-bottom:5px;'>🤖 Android Devices</h4>", unsafe_allow_html=True)
+            st.markdown("""
+            * **Screen On Time & Usage Time:** Go to **Settings > Digital Wellbeing & parental controls**.
+            * **Battery Drain:** Go to **Settings > Battery > Battery usage**.
+            * **Data Usage:** Go to **Settings > Network & internet > Internet > App data usage**.
+            """)
+            
+        with col_ios:
+            st.markdown("<h4 style='color:#F87171; margin-bottom:5px;'>🍏 iOS (iPhone)</h4>", unsafe_allow_html=True)
+            st.markdown("""
+            * **Screen On Time & Usage Time:** Go to **Settings > Screen Time > See All Activity**.
+            * **Battery Drain:** Go to **Settings > Battery**.
+            * **Data Usage:** Go to **Settings > Cellular** (scroll down to Cellular Data).
+            """)
+            
+        st.markdown("<hr style='border-color: rgba(255,255,255,0.1); margin: 15px 0;'>", unsafe_allow_html=True)
+        st.markdown("<h4 style='color:#A855F7; margin-bottom:5px;'>🔋 How to calculate Battery Drain (mAh)?</h4>", unsafe_allow_html=True)
+        st.markdown("""
+        Most phones display battery usage as a percentage (e.g., 50%). To convert this into **mAh** for the model, use this simple formula:
+        > **` (Percentage Used ÷ 100) × Total Battery Capacity (mAh) `**
+        
+        *Example:* If you used 40% of a 5000 mAh battery: `(40 ÷ 100) × 5000 = 2000 mAh`.
+        """, unsafe_allow_html=True)
+
     with st.form("app_behavior_form"):
+        st.subheader("⚙️ Technical Telemetry")
+        st.markdown("<hr style='border-color: rgba(255,255,255,0.1); margin: 10px 0 25px 0;'>", unsafe_allow_html=True)
         col1, col2 = st.columns(2, gap="large")
         with col1:
             age = st.number_input("Age:", 10, 100, 20)
